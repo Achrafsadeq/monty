@@ -14,49 +14,41 @@
  * @n: Integer value stored in the node.
  * @prev: Pointer to the previous element in the stack or queue.
  * @next: Pointer to the next element in the stack or queue.
- *
- * Description: This structure defines a node for a doubly linked list,
- * which can be used to implement both stack (LIFO) and queue (FIFO) data
- * structures.
  */
 typedef struct stack_s
 {
-	int n;
-	struct stack_s *prev;
-	struct stack_s *next;
+        int n;
+        struct stack_s *prev;
+        struct stack_s *next;
 } stack_t;
 
 /**
  * struct instruction_s - Represents an opcode and its associated function.
  * @opcode: The opcode as a string.
  * @f: Function pointer to the function that handles the opcode.
- *
- * Description: This structure maps an opcode to its corresponding
- * function, allowing for dynamic dispatch based on the opcode value
- * during execution.
  */
 typedef struct instruction_s
 {
-	char *opcode;
-	void (*f)(stack_t **stack, unsigned int line_number);
+        char *opcode;
+        void (*f)(stack_t **stack, unsigned int line_number);
 } instruction_t;
 
-extern stack_t *head; /**< Global pointer to the head of the stack. */
+extern stack_t *head; /* Global pointer to the head of the stack. */
 typedef void (*op_func)(stack_t **, unsigned int);
 
 /* File operations */
-void manage_file_open(char *file_name);
+void open_file(const char *file_name);
 int manage_line_parsing(char *buffer, int line_number, int format);
 void manage_file_read(FILE *);
 int manage_char_count(FILE *);
-void manage_func_find(char *, char *, int, int);
+void find_func(char *, char *, int, int);
 
 /* Stack operations */
-stack_t *allocate_node(int n);
+stack_t *create_node(int n);
 void free_nodes(void);
 void display_stack(stack_t **, unsigned int);
 void push_stack(stack_t **, unsigned int);
-void enqueue_node(stack_t **, unsigned int);
+void add_to_queue(stack_t **, unsigned int);
 
 void execute_func(op_func, char *, char *, int, int);
 
@@ -84,4 +76,3 @@ void string_error(int error_code, ...);
 void rotate_right(stack_t **, unsigned int);
 
 #endif
-
