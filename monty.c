@@ -1,82 +1,98 @@
-#define _POSIX_C_SOURCE 200809L
 #include "monty.h"
-#include <sys/types.h>
+
+static stack_t *head = NULL; /* Head is now static */
 
 /**
- * main - Entry point for Monty interpreter.
- * @argc: Argument count.
- * @argv: Argument vector (Monty bytecode file).
+ * main - Entry point of the Monty bytecode interpreter.
+ * @argc: Number of command-line arguments.
+ * @argv: Array of command-line arguments.
  *
- * Return: EXIT_SUCCESS on success, EXIT_FAILURE on failure.
+ * This function checks for the correct number of arguments and
+ * opens the specified Monty bytecode file. It also frees any
+ * allocated nodes before exiting.
+ *
+ * Return: Always returns 0 on success.
  */
 int main(int argc, char *argv[])
 {
-	FILE *file;
-	char *line = NULL;
-	size_t len = 0;
-	ssize_t read;
-	unsigned int line_number = 0;
-	char *opcode, *arg;
-	stack_t *stack = NULL; /* Global variable moved here */
-
 	if (argc != 2)
 	{
 		fprintf(stderr, "USAGE: monty file\n");
 		exit(EXIT_FAILURE);
 	}
-
-	file = fopen(argv[1], "r");
-	if (file == NULL)
-	{
-		fprintf(stderr, "Error: Can't open file %s\n", argv[1]);
-		exit(EXIT_FAILURE);
-	}
-
-	while ((read = getline(&line, &len, file)) != -1)
-	{
-		line_number++;
-		opcode = strtok(line, " \t\n");
-		if (opcode == NULL || opcode[0] == '#')
-			continue;
-		arg = strtok(NULL, " \t\n");
-		execute_instruction(opcode, arg, line_number, &stack);
-	}
-
-	free(line);
-	fclose(file);
-	free_stack(stack);
-	return (EXIT_SUCCESS);
+	open_file(argv[1]);
+	free_nodes();
+	return (0);
 }
 
 /**
- * execute_instruction - Executes the opcode.
- * @opcode: The instruction to execute.
- * @arg: Argument for the instruction.
- * @line_number: The current line number in the file.
- * @stack: Double pointer to the stack.
+ * allocate_node - Creates a new stack node.
+ * @n: The integer value to be stored in the node.
+ *
+ * This function allocates memory for a new stack node, initializes
+ * its fields, and returns a pointer to the newly created node.
+ *
+ * Return: A pointer to the new node on success, or NULL on failure.
  */
-void execute_instruction(char *opcode, char *arg __attribute__((unused)),
-	unsigned int line_number, stack_t **stack)
+stack_t *allocate_node(int n)
 {
-	int i;
-	instruction_t instructions[] = {
-		{"push", push}, {"pall", pall}, {"pint", pint},
-		{"pop", pop}, {"swap", swap}, {"add", add},
-		{"nop", nop}, {"sub", sub}, {"div", div_op},
-		{"mul", mul}, {"mod", mod}, {"pchar", pchar},
-		{"pstr", pstr}, {"rotl", rotl}, {"rotr", rotr},
-		{NULL, NULL}
-	};
+	stack_t *node;
 
-	for (i = 0; instructions[i].opcode; i++)
+	node = malloc(sizeof(stack_t));
+	if (node == NULL)
+		error(4);
+	node->next = NULL;
+	node->prev = NULL;
+	node->n = n;
+	return (node);
+}
+
+/**
+ * free_nodes - Frees all nodes in the stack.
+ *
+ * This function traverses the stack and frees each node.
+ * If the stack is empty, the function returns immediately.
+ */
+void free_nodes(void)
+{
+	stack_t *tmp;
+
+	if (head == NULL)
+		return;
+
+	while (head != NULL)
 	{
-		if (strcmp(opcode, instructions[i].opcode) == 0)
-		{
-			instructions[i].f(stack, line_number);
-			return;
-		}
+		tmp = head;
+		head = head->next;
+		free(tmp);
 	}
+}
 
-	fprintf(stderr, "L%d: unknown instruction %s\n", line_number, opcode);
-	exit(EXIT_FAILURE);
+/**
+ * enqueue_node - Adds a new node to the end of the queue.
+ * @new_node: Double pointer to the new node to be added.
+ * @ln: The line number of the opcode (unused).
+ *
+ * This function adds a new node to the end of the queue. If the
+ * queue is empty, the new node becomes the head of the queue.
+ *
+ * Return: This function does not return a value.
+ */
+void enqueue_node(stack_t **new_node, __attribute__((unused)) unsigned int ln)
+{
+	stack_t *tmp;
+
+	if (new_node == NULL || *new_node == NULL)
+		exit(EXIT_FAILURE);
+	if (head == NULL)
+	{
+		head = *new_node;
+		return;
+	}
+	tmp = head;
+	while (tmp->next != NULL)
+		tmp = tmp->next;
+
+	tmp->next = *new_node;
+	(*new_node)->prev = tmp;
 }

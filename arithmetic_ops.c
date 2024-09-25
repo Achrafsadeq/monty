@@ -1,81 +1,114 @@
 #include "monty.h"
 
 /**
- * add - Adds the top two elements of the stack
- * @stack: Double pointer to the head of the stack
- * @line_number: Line number of the opcode in the Monty file
+ * do_nothing - Performs no operation.
+ * @stack: Pointer to a pointer pointing to the top node of the stack.
+ * @line_number: The line number of the opcode for error reporting.
+ *
+ * This function does nothing and is used as a placeholder for
+ * instructions that require an operation but no action is needed.
  */
-void add(stack_t **stack, unsigned int line_number)
-{
-	if (*stack == NULL || (*stack)->next == NULL)
-	{
-		fprintf(stderr, "L%d: can't add, stack too short\n", line_number);
-		exit(EXIT_FAILURE);
-	}
-	(*stack)->next->n += (*stack)->n;
-	pop(stack, line_number);
-}
-
-/**
- * nop - Does nothing
- * @stack: Double pointer to the head of the stack
- * @line_number: Line number of the opcode in the Monty file
- */
-void nop(stack_t **stack, unsigned int line_number)
+void do_nothing(stack_t **stack, unsigned int line_number)
 {
 	(void)stack;
 	(void)line_number;
 }
 
 /**
- * sub - Subtracts the top element from the second top element of the stack
- * @stack: Double pointer to the head of the stack
- * @line_number: Line number of the opcode in the Monty file
+ * swap_elements - Swaps the top two elements of the stack.
+ * @stack: Pointer to a pointer pointing to the top node of the stack.
+ * @line_number: The line number of the opcode for error reporting.
+ *
+ * This function swaps the top two elements of the stack. If there
+ * are fewer than two elements, it reports an error.
  */
-void sub(stack_t **stack, unsigned int line_number)
+void swap_elements(stack_t **stack, unsigned int line_number)
 {
-	if (*stack == NULL || (*stack)->next == NULL)
-	{
-		fprintf(stderr, "L%d: can't sub, stack too short\n", line_number);
-		exit(EXIT_FAILURE);
-	}
-	(*stack)->next->n -= (*stack)->n;
-	pop(stack, line_number);
+	stack_t *tmp;
+
+	if (stack == NULL || *stack == NULL || (*stack)->next == NULL)
+		extended_error(8, line_number, "swap");
+
+	tmp = (*stack)->next;
+	(*stack)->next = tmp->next;
+	if (tmp->next != NULL)
+		tmp->next->prev = *stack;
+	tmp->next = *stack;
+	(*stack)->prev = tmp;
+	tmp->prev = NULL;
+	*stack = tmp;
 }
 
 /**
- * div_op - Divides the second top element by the top element of the stack
- * @stack: Double pointer to the head of the stack
- * @line_number: Line number of the opcode in the Monty file
+ * add_nodes - Adds the top two elements of the stack.
+ * @stack: Pointer to a pointer pointing to the top node of the stack.
+ * @line_number: The line number of the opcode for error reporting.
+ *
+ * This function adds the top two elements of the stack and replaces
+ * the second element with the result. If there are fewer than two
+ * elements, it reports an error.
  */
-void div_op(stack_t **stack, unsigned int line_number)
+void add_nodes(stack_t **stack, unsigned int line_number)
 {
-	if (*stack == NULL || (*stack)->next == NULL)
-	{
-		fprintf(stderr, "L%d: can't div, stack too short\n", line_number);
-		exit(EXIT_FAILURE);
-	}
+	int sum;
+
+	if (stack == NULL || *stack == NULL || (*stack)->next == NULL)
+		extended_error(8, line_number, "add");
+
+	(*stack) = (*stack)->next;
+	sum = (*stack)->n + (*stack)->prev->n;
+	(*stack)->n = sum;
+	free((*stack)->prev);
+	(*stack)->prev = NULL;
+}
+
+/**
+ * subtract_nodes - Subtracts the top two elements of the stack.
+ * @stack: Pointer to a pointer pointing to the top node of the stack.
+ * @line_number: The line number of the opcode for error reporting.
+ *
+ * This function subtracts the top element from the second top element
+ * and replaces the second top element with the result. If there are
+ * fewer than two elements, it reports an error.
+ */
+void subtract_nodes(stack_t **stack, unsigned int line_number)
+{
+	int difference;
+
+	if (stack == NULL || *stack == NULL || (*stack)->next == NULL)
+		extended_error(8, line_number, "sub");
+
+	(*stack) = (*stack)->next;
+	difference = (*stack)->prev->n - (*stack)->n;
+	(*stack)->n = difference;
+	free((*stack)->prev);
+	(*stack)->prev = NULL;
+}
+
+/**
+ * divide_nodes - Divides the second top element by the top
+ * element of the stack.
+ * @stack: Pointer to a pointer pointing to the top node of the stack.
+ * @line_number: The line number of the opcode for error reporting.
+ *
+ * This function divides the second top element by the top element and
+ * replaces the second top element with the result. If the top element
+ * is zero, it reports an error. If there are fewer than two elements,
+ * it also reports an error.
+ */
+void divide_nodes(stack_t **stack, unsigned int line_number)
+{
+	int quotient;
+
+	if (stack == NULL || *stack == NULL || (*stack)->next == NULL)
+		extended_error(8, line_number, "div");
+
 	if ((*stack)->n == 0)
-	{
-		fprintf(stderr, "L%d: division by zero\n", line_number);
-		exit(EXIT_FAILURE);
-	}
-	(*stack)->next->n /= (*stack)->n;
-	pop(stack, line_number);
-}
+		extended_error(9, line_number);
 
-/**
- * mul - Multiplies the second top element with the top element of the stack
- * @stack: Double pointer to the head of the stack
- * @line_number: Line number of the opcode in the Monty file
- */
-void mul(stack_t **stack, unsigned int line_number)
-{
-	if (*stack == NULL || (*stack)->next == NULL)
-	{
-		fprintf(stderr, "L%d: can't mul, stack too short\n", line_number);
-		exit(EXIT_FAILURE);
-	}
-	(*stack)->next->n *= (*stack)->n;
-	pop(stack, line_number);
+	(*stack) = (*stack)->next;
+	quotient = (*stack)->n / (*stack)->prev->n;
+	(*stack)->n = quotient;
+	free((*stack)->prev);
+	(*stack)->prev = NULL;
 }
