@@ -102,3 +102,29 @@ void swap(stack_t **stack, unsigned int line_number)
 	(*stack)->n = (*stack)->next->n;
 	(*stack)->next->n = temp;
 }
+void free_stack(stack_t *stack)
+{
+    stack_t *temp;
+
+    while (stack)
+    {
+        temp = stack;
+        stack = stack->next;
+        free(temp);
+    }
+}
+int is_number(char *str)
+{
+    if (str == NULL || *str == '\0')
+        return 0;
+    if (*str == '-' || *str == '+') /* Handle negative or positive sign */
+        str++;
+    while (*str)
+    {
+        if (!isdigit(*str))
+            return 0;
+        str++;
+    }
+    return 1;
+}
+
