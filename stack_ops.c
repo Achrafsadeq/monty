@@ -10,7 +10,7 @@
  */
 void push_stack(stack_t **new_node, __attribute__((unused)) unsigned int ln)
 {
-	stack_t *tmp;
+	stack_t *current_node;
 
 	if (new_node == NULL || *new_node == NULL)
 		exit(EXIT_FAILURE);
@@ -19,10 +19,10 @@ void push_stack(stack_t **new_node, __attribute__((unused)) unsigned int ln)
 		head = *new_node;
 		return;
 	}
-	tmp = head;
+	current_node = head;
 	head = *new_node;
-	head->next = tmp;
-	tmp->prev = head;
+	head->next = current_node;
+	current_node->prev = head;
 }
 
 /**
@@ -35,16 +35,16 @@ void push_stack(stack_t **new_node, __attribute__((unused)) unsigned int ln)
  */
 void display_stack(stack_t **stack, unsigned int line_number)
 {
-	stack_t *tmp;
+	stack_t *current_node;
 
 	(void) line_number;
 	if (stack == NULL)
 		exit(EXIT_FAILURE);
-	tmp = *stack;
-	while (tmp != NULL)
+	current_node = *stack;
+	while (current_node != NULL)
 	{
-		printf("%d\n", tmp->n);
-		tmp = tmp->next;
+		printf("%d\n", current_node->n);
+		current_node = current_node->next;
 	}
 }
 
@@ -58,16 +58,16 @@ void display_stack(stack_t **stack, unsigned int line_number)
  */
 void remove_top(stack_t **stack, unsigned int line_number)
 {
-	stack_t *tmp;
+	stack_t *current_node;
 
 	if (stack == NULL || *stack == NULL)
 		extended_error(7, line_number);
 
-	tmp = *stack;
-	*stack = tmp->next;
+	current_node = *stack;
+	*stack = current_node->next;
 	if (*stack != NULL)
 		(*stack)->prev = NULL;
-	free(tmp);
+	free(current_node);
 }
 
 /**

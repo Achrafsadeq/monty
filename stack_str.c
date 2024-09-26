@@ -12,15 +12,15 @@
  */
 void print_character(stack_t **stack, unsigned int line_number)
 {
-	int ascii;
+	int ASCII;
 
 	if (stack == NULL || *stack == NULL)
 		string_error(11, line_number);
 
-	ascii = (*stack)->n;
-	if (ascii < 0 || ascii > 127)
+	ASCII = (*stack)->n;
+	if (ASCII < 0 || ASCII > 127)
 		string_error(10, line_number);
-	printf("%c\n", ascii);
+	printf("%c\n", ASCII);
 }
 
 /**
@@ -35,8 +35,8 @@ void print_character(stack_t **stack, unsigned int line_number)
  */
 void print_string(stack_t **stack, __attribute__((unused))unsigned int ln)
 {
-	int ascii;
-	stack_t *tmp;
+	int ASCII;
+	stack_t *current_node;
 
 	if (stack == NULL || *stack == NULL)
 	{
@@ -44,14 +44,14 @@ void print_string(stack_t **stack, __attribute__((unused))unsigned int ln)
 		return;
 	}
 
-	tmp = *stack;
-	while (tmp != NULL)
+	current_node = *stack;
+	while (current_node != NULL)
 	{
-		ascii = tmp->n;
-		if (ascii <= 0 || ascii > 127)
+		ASCII = current_node->n;
+		if (ASCII <= 0 || ASCII > 127)
 			break;
-		printf("%c", ascii);
-		tmp = tmp->next;
+		printf("%c", ASCII);
+		current_node = current_node->next;
 	}
 	printf("\n");
 }
@@ -67,17 +67,17 @@ void print_string(stack_t **stack, __attribute__((unused))unsigned int ln)
  */
 void rotate_left(stack_t **stack, __attribute__((unused))unsigned int ln)
 {
-	stack_t *tmp;
+	stack_t *current_node;
 
 	if (stack == NULL || *stack == NULL || (*stack)->next == NULL)
 		return;
 
-	tmp = *stack;
-	while (tmp->next != NULL)
-		tmp = tmp->next;
+	current_node = *stack;
+	while (current_node->next != NULL)
+		current_node = current_node->next;
 
-	tmp->next = *stack;
-	(*stack)->prev = tmp;
+	current_node->next = *stack;
+	(*stack)->prev = current_node;
 	*stack = (*stack)->next;
 	(*stack)->prev->next = NULL;
 	(*stack)->prev = NULL;
@@ -94,19 +94,19 @@ void rotate_left(stack_t **stack, __attribute__((unused))unsigned int ln)
  */
 void rotate_right(stack_t **stack, __attribute__((unused))unsigned int ln)
 {
-	stack_t *tmp;
+	stack_t *current_node;
 
 	if (stack == NULL || *stack == NULL || (*stack)->next == NULL)
 		return;
 
-	tmp = *stack;
+	current_node = *stack;
 
-	while (tmp->next != NULL)
-		tmp = tmp->next;
+	while (current_node->next != NULL)
+		current_node = current_node->next;
 
-	tmp->next = *stack;
-	tmp->prev->next = NULL;
-	tmp->prev = NULL;
-	(*stack)->prev = tmp;
-	(*stack) = tmp;
+	current_node->next = *stack;
+	current_node->prev->next = NULL;
+	current_node->prev = NULL;
+	(*stack)->prev = current_node;
+	(*stack) = current_node;
 }
