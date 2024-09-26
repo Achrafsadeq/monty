@@ -47,7 +47,6 @@ int manage_line_parsing(char *buffer, int line_number, int format);
 void manage_file_read(FILE *);
 int manage_char_count(FILE *);
 void find_func(char *, char *, int, int);
-
 stack_t *create_node(int n);
 void free_nodes(void);
 void display_stack(stack_t **, unsigned int);
