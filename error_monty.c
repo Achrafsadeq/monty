@@ -4,12 +4,6 @@
  * error - Prints appropriate error messages based on the error code.
  * @error_code: The code indicating the type of error that occurred.
  *
- * Error Codes:
- * (1) The user does not provide any file or provides more than one file.
- * (2) The specified file cannot be opened or read.
- * (3) The file contains an invalid instruction.
- * (4) Memory allocation fails.
- * (5) The parameter passed to the instruction "push" is not an integer.
  */
 void error(int error_code, ...)
 {
@@ -49,11 +43,6 @@ void error(int error_code, ...)
  * extended_error - Handles additional error cases.
  * @error_code: The code indicating the type of error that occurred.
  *
- * Error Codes:
- * (6) The stack is empty when attempting to print the top element.
- * (7) The stack is empty when attempting to pop an element.
- * (8) The stack is too short for the requested operation.
- * (9) Division by zero encountered in operations.
  */
 void extended_error(int error_code, ...)
 {
@@ -92,9 +81,6 @@ void extended_error(int error_code, ...)
  * string_error - Handles errors related to string operations.
  * @error_code: The code indicating the type of error that occurred.
  *
- * Error Codes:
- * (10) The value inside a node is outside the ASCII range.
- * (11) The stack is empty when attempting to print a character.
  */
 void string_error(int error_code, ...)
 {
