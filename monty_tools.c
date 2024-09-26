@@ -1,5 +1,4 @@
 #include "monty.h"
-
 /**
  * open_file - Opens a file for reading.
  * @file_name: The path to the file to be opened.

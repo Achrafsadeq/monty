@@ -1,5 +1,4 @@
 #include "monty.h"
-
 /**
  * multiply_nodes - Multiplies the top two elements of the stack.
  * @stack: Pointer to a pointer pointing to the top node of the stack.
