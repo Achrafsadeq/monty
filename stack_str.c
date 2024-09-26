@@ -57,7 +57,7 @@ void print_string(stack_t **stack, __attribute__((unused))unsigned int ln)
 }
 
 /**
- * rotate_left - Rotates the top element of the stack to the bottom.
+ * rotl - Rotates the top element of the stack to the bottom.
  * @stack: Pointer to a pointer pointing to the top node of the stack.
  * @ln: The line number of the opcode (unused).
  *
@@ -65,7 +65,7 @@ void print_string(stack_t **stack, __attribute__((unused))unsigned int ln)
  * adjusting the pointers accordingly. If the stack is empty or
  * has only one element, no action is taken.
  */
-void rotate_left(stack_t **stack, __attribute__((unused))unsigned int ln)
+void rotl(stack_t **stack, __attribute__((unused))unsigned int ln)
 {
 	stack_t *current_node;
 
@@ -84,7 +84,7 @@ void rotate_left(stack_t **stack, __attribute__((unused))unsigned int ln)
 }
 
 /**
- * rotate_right - Rotates the last element of the stack to the top.
+ * rotr - Rotates the last element of the stack to the top.
  * @stack: Pointer to a pointer pointing to the top node of the stack.
  * @ln: The line number of the opcode (unused).
  *
@@ -92,7 +92,7 @@ void rotate_left(stack_t **stack, __attribute__((unused))unsigned int ln)
  * adjusting the pointers accordingly. If the stack is empty or
  * has only one element, no action is taken.
  */
-void rotate_right(stack_t **stack, __attribute__((unused))unsigned int ln)
+void rotr(stack_t **stack, __attribute__((unused))unsigned int ln)
 {
 	stack_t *current_node;
 

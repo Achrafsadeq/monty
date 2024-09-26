@@ -67,12 +67,12 @@ void modulate_nodes(stack_t **, unsigned int);
 /* String operations */
 void print_character(stack_t **, unsigned int);
 void print_string(stack_t **, unsigned int);
-void rotate_left(stack_t **, unsigned int);
+void rotl(stack_t **, unsigned int);
 
 /* Error handling */
 void error(int error_code, ...);
 void extended_error(int error_code, ...);
 void string_error(int error_code, ...);
-void rotate_right(stack_t **, unsigned int);
+void rotr(stack_t **, unsigned int);
 
 #endif

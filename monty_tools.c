@@ -89,8 +89,8 @@ void find_func(char *opcode, char *value, int ln, int format)
 		{"mod", modulate_nodes},
 		{"pchar", print_character},
 		{"pstr", print_string},
-		{"rotl", rotate_left},
-		{"rotr", rotate_right},
+		{"rotl", rotl},
+		{"rotr", rotr},
 		{NULL, NULL}
 	};
 
