@@ -24,19 +24,19 @@ void do_nothing(stack_t **stack, unsigned int line_number)
  */
 void swap_elements(stack_t **stack, unsigned int line_number)
 {
-	stack_t *tmp;
+	stack_t *aux;
 
 	if (stack == NULL || *stack == NULL || (*stack)->next == NULL)
 		extended_error(8, line_number, "swap");
 
-	tmp = (*stack)->next;
-	(*stack)->next = tmp->next;
-	if (tmp->next != NULL)
-		tmp->next->prev = *stack;
-	tmp->next = *stack;
-	(*stack)->prev = tmp;
-	tmp->prev = NULL;
-	*stack = tmp;
+	aux = (*stack)->next;
+	(*stack)->next = aux->next;
+	if (aux->next != NULL)
+		aux->next->prev = *stack;
+	aux->next = *stack;
+	(*stack)->prev = aux;
+	aux->prev = NULL;
+	*stack = aux;
 }
 
 /**
@@ -50,14 +50,14 @@ void swap_elements(stack_t **stack, unsigned int line_number)
  */
 void add_nodes(stack_t **stack, unsigned int line_number)
 {
-	int sum;
+	int add;
 
 	if (stack == NULL || *stack == NULL || (*stack)->next == NULL)
 		extended_error(8, line_number, "add");
 
 	(*stack) = (*stack)->next;
-	sum = (*stack)->n + (*stack)->prev->n;
-	(*stack)->n = sum;
+	add = (*stack)->n + (*stack)->prev->n;
+	(*stack)->n = add;
 	free((*stack)->prev);
 	(*stack)->prev = NULL;
 }

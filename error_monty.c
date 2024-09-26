@@ -13,11 +13,11 @@
  */
 void error(int error_code, ...)
 {
-	va_list ag;
-	char *op;
+	va_list arguments;
+	char *pointer;
 	int l_number;
 
-	va_start(ag, error_code);
+	va_start(arguments, error_code);
 	switch (error_code)
 	{
 		case 1:
@@ -25,18 +25,18 @@ void error(int error_code, ...)
 			break;
 		case 2:
 			fprintf(stderr, "Error: Can't open file %s\n",
-				va_arg(ag, char *));
+				va_arg(arguments, char *));
 			break;
 		case 3:
-			l_number = va_arg(ag, int);
-			op = va_arg(ag, char *);
-			fprintf(stderr, "L%d: unknown instruction %s\n", l_number, op);
+			l_number = va_arg(arguments, int);
+			pointer = va_arg(arguments, char *);
+			fprintf(stderr, "L%d: unknown instruction %s\n", l_number, pointer);
 			break;
 		case 4:
 			fprintf(stderr, "Error: malloc failed\n");
 			break;
 		case 5:
-			fprintf(stderr, "L%d: usage: push integer\n", va_arg(ag, int));
+			fprintf(stderr, "L%d: usage: push integer\n", va_arg(arguments, int));
 			break;
 		default:
 			break;
@@ -57,29 +57,29 @@ void error(int error_code, ...)
  */
 void extended_error(int error_code, ...)
 {
-	va_list ag;
-	char *op;
+	va_list arguments;
+	char *pointer;
 	int l_number;
 
-	va_start(ag, error_code);
+	va_start(arguments, error_code);
 	switch (error_code)
 	{
 		case 6:
 			fprintf(stderr, "L%d: can't pint, stack empty\n",
-				va_arg(ag, int));
+				va_arg(arguments, int));
 			break;
 		case 7:
 			fprintf(stderr, "L%d: can't pop an empty stack\n",
-				va_arg(ag, int));
+				va_arg(arguments, int));
 			break;
 		case 8:
-			l_number = va_arg(ag, unsigned int);
-			op = va_arg(ag, char *);
-			fprintf(stderr, "L%d: can't %s, stack too short\n", l_number, op);
+			l_number = va_arg(arguments, unsigned int);
+			pointer = va_arg(arguments, char *);
+			fprintf(stderr, "L%d: can't %s, stack too short\n", l_number, pointer);
 			break;
 		case 9:
 			fprintf(stderr, "L%d: division by zero\n",
-				va_arg(ag, unsigned int));
+				va_arg(arguments, unsigned int));
 			break;
 		default:
 			break;
@@ -98,11 +98,11 @@ void extended_error(int error_code, ...)
  */
 void string_error(int error_code, ...)
 {
-	va_list ag;
+	va_list arguments;
 	int l_number;
 
-	va_start(ag, error_code);
-	l_number = va_arg(ag, int);
+	va_start(arguments, error_code);
+	l_number = va_arg(arguments, int);
 	switch (error_code)
 	{
 		case 10:
