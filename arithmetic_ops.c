@@ -79,7 +79,7 @@ void subtract_nodes(stack_t **stack, unsigned int line_number)
 		extended_error(8, line_number, "sub");
 
 	(*stack) = (*stack)->next;
-	difference = (*stack)->prev->n - (*stack)->n;
+	difference = (*stack)->n - (*stack)->prev->n;
 	(*stack)->n = difference;
 	free((*stack)->prev);
 	(*stack)->prev = NULL;
