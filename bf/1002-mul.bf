@@ -1,25 +1,14 @@
->,>,<<                 # Read two digits from stdin (in ASCII)
-[                      # Loop to subtract 48 from both digits to convert ASCII to integers
-    >--------          # Subtract 8 (part 1)
-    >--------          # Subtract 8 (part 2)
-    <<-                # Decrement loop counter
+++++[>++++[>+++<-]<-]   # Write the ASCII value of '0' (48 / 0x30) to cell(2)
+,>,>                    # Read two numbers from stdin into cell(0) and cell(1)
+[<-<->>-]               # Subtract 48 from both cell(0) and cell(1) to convert from ASCII to integer
+<<                      # Move to cell(0) for the multiplication loop
+[                       # Start multiplication loop (cell(0) will be multiplied by cell(1))
+    >                   # Move to cell(1)
+    [>+>+<<-]           # Move value from cell(1) to cell(2) and cell(3) (double addition)
+    >>                  # Move to cell(3)
+    [<<+>>-]            # Move value from cell(3) back to cell(1)
+    <<<-                # Decrement cell(0) and repeat the loop until cell(0) is zero
 ]
-++++++++>              # Add 8 to adjust for ASCII offset and prepare for multiplication
-[
-    >                  # Move to first digit
-    [                  # Loop through first digit
-        ->+>+<<        # Multiply: transfer value to create partial products
-    ]
-    >>                 # Move to second result
-    [                  # Loop through second digit
-        -<<+>>         # Combine partial products
-    ]
-    <<<                # Move back to starting position
-    -                  # Decrement loop counter
-]
-<                      # Final adjustment
-[
-    >>>++++++          # Add 6 to convert result back to ASCII
-    <<<-               # Decrement loop counter
-]
->>>.                   # Output the result (single digit multiplication result)
+>[-]<                   # Clear cell(1) (set to 0), which will now be used as a counter
+++++[>++++[>+++<-]<-]   # Add 48 to cell(2) to convert the result back to ASCII ('0' + result)
+>>.                     # Move to cell(2) and print the result (which is now an ASCII character)
