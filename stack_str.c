@@ -1,4 +1,5 @@
 #include "monty.h"
+
 /**
  * print_character - Prints the ASCII character corresponding to the value
  * at the top of the stack.
