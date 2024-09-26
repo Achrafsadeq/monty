@@ -1,14 +1,14 @@
- ++++[>++++[>+++<-]<-]   writing 48 / 0x30 / '0' in cell(2)
-    ,>,>                    reading two numbers in cell(0) and cell(1)
-    [<-<->>-]               decrementing cell(0) and cell(1) by 48 / 0x30 / '0'
-    <<                      go to cell(0)
-    [                       mulitplication loop
-        >                   go to cell(1)
-        [>+>+<<-]           move cell(1) to cell(2) and cell(3)
-        >>                  go to cell(3)
-        [<<+>>-]            move cell(3) back to cell(1)
-        <<<-                decrement cell(0)
-    ]
-    >[-]<                   set cell(1) to 0 so that it can be used as counter (we are in cell 0 here)
-    ++++[>++++[>+++<-]<-]   adding 48 / 0x30 / '0' to cell(2) cell 2 has the result
-    >>.                     print result (go to cell 2 and print)
+++++[>++++[>+++<-]<-]    Write the ASCII value of '0' (48 / 0x30) to cell(2)
+,>,>                     Read two numbers from stdin into cell(0) and cell(1)
+[<-<->>-]                Subtract 48 from both cell(0) and cell(1) to convert from ASCII to integer
+<<                       Move to cell(0) for the multiplication loop
+[                        Start multiplication loop (cell(0) will be multiplied by cell(1))
+    >                    Move to cell(1)
+    [>+>+<<-]            Move value from cell(1) to cell(2) and cell(3) (double addition)
+    >>                   Move to cell(3)
+    [<<+>>-]             Move value from cell(3) back to cell(1)
+    <<<-                 Decrement cell(0) and repeat the loop until cell(0) is zero
+]
+>[-]<                    Clear cell(1) (set to 0), which will now be used as a counter
+++++[>++++[>+++<-]<-]    Add 48 to cell(2) to convert the result back to ASCII ('0' + result)
+>>.                      Move to cell(2) and print the result (which is now an ASCII character)
